@@ -7,6 +7,8 @@ export interface Task {
   isVisible:boolean;
 }
 
+
+
 enum SortOptions{
   ASC = 'asc',
   DESC = 'desc',
@@ -22,6 +24,8 @@ export class TodoComponent implements OnInit {
 
   tasks: Task [] = [];
 
+  readonly TASKS_KEY = 'tasks';
+
   sortEnum = SortOptions;
   sort:SortOptions = SortOptions.NONE;
 
@@ -29,6 +33,10 @@ export class TodoComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    let saveTasksJson = localStorage.getItem(this.TASKS_KEY)
+    if(saveTasksJson != null){
+      this.tasks = JSON.parse(saveTasksJson);
+    }
   }
 
   handleSubmit(addForm:NgForm){
@@ -102,4 +110,7 @@ export class TodoComponent implements OnInit {
     });
   }
 
+  handleSave() : void{
+    localStorage.setItem(this.TASKS_KEY,JSON.stringify(this.tasks))
+  }
 }
